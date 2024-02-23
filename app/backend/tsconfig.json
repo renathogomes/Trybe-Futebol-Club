@@ -18,5 +18,5 @@
     }
   },
   "include": ["src/**/*", "migrations"],
-  "exclude": ["src/tests"]
+  // "exclude": ["src/tests"]
 }
