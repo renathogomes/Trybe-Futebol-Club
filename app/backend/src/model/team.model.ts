@@ -1,14 +1,17 @@
 import SequelizeTeam from '../database/models/SequelizeTeam';
-import { Iteam } from '../Interfaces/teams/ITeam';
-import { ITeamCreate } from '../Interfaces/ContractModel';
+import { ITeam } from '../Interfaces/teams/ITeam';
+import { ITeamModel } from '../Interfaces/teams/ITeamModel';
 
-export default class TeamModel implements ITeamCreate {
+export default class TeamModel implements ITeamModel {
   private model = SequelizeTeam;
 
-  // incialmenente quer listar os times
-
-  async findAll(): Promise<Iteam[]> {
+  async findAll(): Promise<ITeam[]> {
     const teams = await this.model.findAll();
     return teams;
+  }
+
+  async findById(id: number): Promise<ITeam> {
+    const team = await this.model.findByPk(id);
+    return team;
   }
 }
