@@ -1,9 +1,7 @@
-import { ITeam } from './teams/ITeam';
-
-export interface ContractModelCreate {
-  create(data: Partial<ITeam>): Promise<ITeam>;
+export interface ContractModelCreate<T> {
+  create(data: Partial<T>): Promise<T>;
 }
 
-export interface ContractModelRead {
-  read(): Promise<ITeam[]>;
+export interface ContractModelRead<T> {
+  findAll(): Promise<T[]>;
 }

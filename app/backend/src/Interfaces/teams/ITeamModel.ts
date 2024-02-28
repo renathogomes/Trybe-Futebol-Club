@@ -1,8 +1,8 @@
 import { ContractModelRead } from '../ContractModel';
-import { Iteam } from './ITeam';
+import { ITeam } from './ITeam';
 
-export interface ITeamModel extends ContractModelRead<Iteam> {
-  fincAll(): Promise<Iteam[]>;
-  findById(id: number): Promise<Iteam>;
+export interface ITeamModel extends ContractModelRead<ITeam> {
+  fincAll(): Promise<ITeam[]>;
+  findById(id: number): Promise<ITeam>;
 
 }
