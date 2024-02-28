@@ -4,5 +4,5 @@ export interface ContractModelCreate<T> {
 
 export interface ContractModelRead<T> {
   findAll(): Promise<T[]>;
-  findById(id: number): Promise<T>;
+  findById(id: number): Promise<T | null>;
 }
