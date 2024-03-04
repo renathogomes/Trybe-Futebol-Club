@@ -32,7 +32,6 @@ SequelizeTeam.init(
     sequelize: db,
     modelName: 'team',
     timestamps: false,
-
     underscored: true,
   },
 );
