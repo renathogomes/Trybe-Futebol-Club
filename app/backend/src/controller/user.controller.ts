@@ -11,4 +11,11 @@ export default class UserController {
     const ServiceResponse = await this.userService.login(req.body.email, req.body.password);
     return res.status(mapStatusHTTP(ServiceResponse.status)).json(ServiceResponse.data);
   }
+
+  public async getRole(_req: Request, res: Response) {
+    const { role } = res.locals.auth;
+    console.log(this);
+
+    return res.status(200).json({ role });
+  }
 }
