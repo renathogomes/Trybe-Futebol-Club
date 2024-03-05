@@ -2,6 +2,7 @@ import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { ServiceResponse } from '../Interfaces/ServiceResponse';
 import { IUserModel } from '../Interfaces/users/IUserModel';
+import UserModel from '../model/user.model';
 
 type LoginResponse = {
   token: string;
@@ -9,7 +10,7 @@ type LoginResponse = {
 
 export default class UserService {
   constructor(
-    private userModel: IUserModel,
+    private userModel: IUserModel = new UserModel(),
   ) { }
 
   public async login(email: string, password: string): Promise<ServiceResponse<LoginResponse>> {
