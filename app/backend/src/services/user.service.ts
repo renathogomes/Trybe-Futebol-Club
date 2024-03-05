@@ -23,7 +23,10 @@ export default class UserService {
       };
     }
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '7d' });
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET as string ?? 'secret',
+    );
     return { status: 'SUCCESSFULL', data: { token } };
   }
 }
