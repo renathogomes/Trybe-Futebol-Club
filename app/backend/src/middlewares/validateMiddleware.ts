@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 export default class ValidateMiddleware {
   static validateBody(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body;
-    const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!password || !email) {
       return res.status(400).json({ message: 'All fields must be filled' });
     }
