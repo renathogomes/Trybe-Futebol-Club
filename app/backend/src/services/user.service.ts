@@ -27,6 +27,6 @@ export default class UserService {
       { id: user.id, role: user.role },
       process.env.JWT_SECRET as string ?? 'secret',
     );
-    return { status: 'SUCCESSFULL', data: { token } };
+    return { status: 'SUCCESSFUL', data: { token } };
   }
 }
