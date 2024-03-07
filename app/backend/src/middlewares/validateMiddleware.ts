@@ -21,7 +21,7 @@ export default class ValidateMiddleware {
     }
     const token = token1.split(' ')[1];
     try {
-      const secret = process.env.SECRET ?? 'secret';
+      const secret = process.env.JWT_SECRET ?? 'jwt_secret';
       const decoded = jwt.verify(token, secret);
       res.locals.authorization = decoded;
     } catch (error) {
