@@ -22,4 +22,14 @@ export default class MatchController {
 
     return res.status(mapStatusHTTP(inProgressMatches.status)).json(inProgressMatches.data);
   };
+
+  public updateMatch = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+
+    const updatedMatch = await this
+      .matchService.updateMatch(homeTeamGoals, awayTeamGoals, Number(id));
+
+    return res.status(mapStatusHTTP(updatedMatch.status)).json(updatedMatch.data);
+  };
 }

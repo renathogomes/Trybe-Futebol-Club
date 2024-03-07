@@ -43,4 +43,10 @@ export default class MatchService {
     const filteredMatches = await this.matchModel.filteredMatches(query);
     return { status: 'SUCCESSFUL', data: filteredMatches };
   }
+
+  public async updateMatch(homeTeamGoals: number, awayTeamGoals: number, id: number):
+  Promise<ServiceResponse<{ message: 'Finished' }>> {
+    await this.matchModel.updateMatch(homeTeamGoals, awayTeamGoals, id);
+    return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
+  }
 }
