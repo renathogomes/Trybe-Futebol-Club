@@ -24,8 +24,9 @@ export default class UserService {
     }
 
     const token = jwt.sign(
-      { id: user.id, role: user.role },
-      process.env.JWT_SECRET as string ?? 'secret',
+      { id: user.id, role: user.role, email: user.email },
+      process.env.JWT_SECRET as string ?? '',
+      { expiresIn: '7d' },
     );
     return { status: 'SUCCESSFUL', data: { token } };
   }
