@@ -17,7 +17,7 @@ export default class UserService {
     const user = await this.userModel.findByEmail(email);
     if (!user) return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
     if (!isPasswordValid) {
       return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' },
       };
