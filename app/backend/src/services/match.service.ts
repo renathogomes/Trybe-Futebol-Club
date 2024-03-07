@@ -45,8 +45,13 @@ export default class MatchService {
   }
 
   public async updateMatch(homeTeamGoals: number, awayTeamGoals: number, id: number):
-  Promise<ServiceResponse<{ message: 'Finished' }>> {
+  Promise<ServiceResponse<{ message: 'Updated' }>> {
     await this.matchModel.updateMatch(homeTeamGoals, awayTeamGoals, id);
+    return { status: 'SUCCESSFUL', data: { message: 'Updated' } };
+  }
+
+  public async endMatch(id: number): Promise<ServiceResponse<{ message: 'Finished' }>> {
+    await this.matchModel.endMatch(id);
     return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
   }
 }
