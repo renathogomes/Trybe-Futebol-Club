@@ -31,6 +31,11 @@ export default class MatchService {
 
   public async getAllMatches(): Promise<ServiceResponse<IMatch[]>> {
     const allMatches = await this.matchModel.getAll();
+
+    if (!allMatches) {
+      return { status: 'NOT_FOUND', data: { message: 'Teams not found' } };
+    }
+
     return { status: 'SUCCESSFUL', data: allMatches };
   }
 
