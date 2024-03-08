@@ -12,14 +12,15 @@ export default class MatchService {
 
   public async createMatch(match: MatchDefault): Promise<ServiceResponse<IMatch>> {
     const { awayTeamId, homeTeamId } = match;
-    const homeTeam = await this.teamService.getById(Number(homeTeamId));
-    const awayTeam = await this.teamService.getById(Number(awayTeamId));
 
     if (homeTeamId === awayTeamId) {
       return {
         status: 'UNPROCESSABLE_ENTITY',
         data: { message: 'It is not possible to create a match with two equal teams' } };
     }
+
+    const homeTeam = await this.teamService.getById(Number(homeTeamId));
+    const awayTeam = await this.teamService.getById(Number(awayTeamId));
 
     if (homeTeam.status === 'NOT_FOUND' || awayTeam.status === 'NOT_FOUND') {
       return { status: 'NOT_FOUND', data: { message: 'There is no team with such id!' } };
