@@ -4,7 +4,7 @@ import mapStatusHTTP from '../utils/mapStatusHTTP';
 
 export default class UserController {
   constructor(
-    private userService: UserService = new UserService(),
+    private userService = new UserService(),
   ) { }
 
   public async login(req: Request, res: Response) {
