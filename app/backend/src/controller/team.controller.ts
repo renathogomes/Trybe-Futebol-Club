@@ -4,7 +4,7 @@ import mapStatusHTTP from '../utils/mapStatusHTTP';
 
 export default class TeamController {
   constructor(
-    private teamService: TeamService = new TeamService(),
+    private teamService = new TeamService(),
   ) { }
 
   public async getAllTeams(_req: Request, res: Response) {
