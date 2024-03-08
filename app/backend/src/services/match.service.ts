@@ -12,8 +12,8 @@ export default class MatchService {
 
   public async createMatch(match: MatchDefault): Promise<ServiceResponse<IMatch>> {
     const { awayTeamId, homeTeamId } = match;
-    const homeTeam = await this.teamService.getById(homeTeamId);
-    const awayTeam = await this.teamService.getById(awayTeamId);
+    const homeTeam = await this.teamService.getById(Number(homeTeamId));
+    const awayTeam = await this.teamService.getById(Number(awayTeamId));
 
     if (homeTeamId === awayTeamId) {
       return {
