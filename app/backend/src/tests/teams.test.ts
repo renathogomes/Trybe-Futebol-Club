@@ -23,4 +23,17 @@ describe('Testa Teams', function () {
         expect(res.status).to.equal(200);
         expect(res.body).to.deep.equal(teamsList);
     });
+
+    it('Testa se retorna um time pelo id', async function () {
+        sinon.stub(SequelizeTeam, 'findByPk').resolves(teamsList[0] as any);
+        const res = await chai.request(app).get('/teams/1');
+        expect(res.status).to.equal(200);
+        expect(res.body).to.deep.equal(teamsList[0]);
+    })
+    it('Testa se não retorna um time pelo id', async function () {
+        sinon.stub(SequelizeTeam, 'findByPk').resolves(null as any);
+        const res = await chai.request(app).get('/teams/1');
+        expect(res.status).to.equal(404);
+        expect(res.body).to.deep.equal({ message: 'Team not found' });
+    })
 });
