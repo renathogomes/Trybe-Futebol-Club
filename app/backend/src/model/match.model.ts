@@ -11,10 +11,10 @@ export default class MatchModel implements IMatchModel {
     const { awayTeamGoals, awayTeamId, homeTeamGoals, homeTeamId } = match;
 
     const newMatch = await this.model.create({
-      awayTeamGoals,
-      awayTeamId,
-      homeTeamGoals,
       homeTeamId,
+      homeTeamGoals,
+      awayTeamId,
+      awayTeamGoals,
       inProgress: true });
 
     return newMatch;
