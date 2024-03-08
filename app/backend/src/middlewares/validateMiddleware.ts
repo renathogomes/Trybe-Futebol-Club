@@ -23,7 +23,7 @@ export default class ValidateMiddleware {
     try {
       const secret = process.env.JWT_SECRET ?? 'jwt_secret';
       const decoded = jwt.verify(token, secret);
-      res.locals.authorization = decoded;
+      res.locals.auth = decoded;
     } catch (error) {
       return res.status(401).json({ message: 'Token must be a valid token' });
     }
