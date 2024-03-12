@@ -9,7 +9,7 @@ import { getAllTeamStats } from '../utils/leadboard';
 export default class LeaderBoardService {
   constructor(private model: TeamModel, private matchModel: MatchModel) {}
 
-  public static async getLeaderBoard(teams: ILeaderBoard[]): Promise<ILeaderBoard[]> {
+  public static getLeaderBoard(teams: ILeaderBoard[]): ILeaderBoard[] {
     return teams.sort((a, b) => {
       const totalPointsComparison = b.totalPoints - a.totalPoints;
       if (totalPointsComparison !== 0) {
@@ -33,17 +33,20 @@ export default class LeaderBoardService {
         }
         acc[match.homeTeamId].push(match);
       } else if (path === 'away') {
-        if (!acc[match.awayTeamId]) {
-          acc[match.awayTeamId] = [];
-        }
+        if (!acc[match.awayTeamId]) acc[match.awayTeamId] = [];
         acc[match.awayTeamId].push(match);
       }
       return acc;
     }, {} as Record<string, IMatch[]>);
-    return teams.map((team) => ({
+
+    const allTeams: ILeaderBoard[] = teams.map((team) => ({
       name: team.teamName,
       ...getAllTeamStats(matchesByTeamId[team.id] || [], team.id),
     }));
+
+    const sortedLeaderBoard = LeaderBoardService.getLeaderBoard(allTeams);
+
+    return sortedLeaderBoard;
   }
 
   public async getLeaderboard(path: string): Promise<ServiceResponse<ILeaderBoard[]>> {
