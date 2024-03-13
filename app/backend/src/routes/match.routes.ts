@@ -10,6 +10,7 @@ router.get('/', (req: Request, res: Response) => matchController.getAllMatches(r
 router.post(
   '/',
   Validate.validateToken,
+  Validate.validateTeam,
   (req: Request, res: Response) => matchController.createMatch(req, res),
 );
 

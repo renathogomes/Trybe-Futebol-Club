@@ -29,4 +29,13 @@ export default class ValidateMiddleware {
     }
     next();
   }
+
+  static validateTeam(req: Request, res: Response, next: NextFunction): Response | void {
+    const team = req.body;
+    if (team.homeTeamId === team.awayTeamId) {
+      return res
+        .status(422).json({ message: 'It is not possible to create a match with two equal teams' });
+    }
+    next();
+  }
 }

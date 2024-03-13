@@ -1,64 +1,37 @@
-import { ServiceResponse } from '../Interfaces/ServiceResponse';
-import { IMatch } from '../Interfaces/match/IMatch';
-import MatchModel from '../model/match.model';
-import TeamService from '../services/team.service';
+import { Request, Response } from 'express';
+import mapStatusHTTP from '../utils/mapStatusHTTP';
+import MatchsService from '../services/match.service';
 
-type FinishMessage = { message: 'Finished'; };
-type UpdateMessage = { message: 'Updated'; };
+export default class MatchsController {
+  constructor(private matchService = new MatchsService()) {}
 
-export default class MatchService {
-  constructor(
-    private matchModel = new MatchModel(),
-    private teamService = new TeamService(),
-  ) { }
-
-  public async getAllMatches(): Promise<ServiceResponse<IMatch[]>> {
-    const matches = await this.matchModel.getAll();
-    if (!matches) return { status: 'NOT_FOUND', data: { message: 'Teams not found' } };
-
-    return { status: 'SUCCESSFUL', data: matches };
-  }
-
-  async getFiltredMatches(query: string): Promise<ServiceResponse<IMatch[]>> {
-    const matchsFiltred = await this.matchModel.filteredMatches(query);
-
-    return { status: 'SUCCESSFUL', data: matchsFiltred };
-  }
-
-  async endMatch(id: number): Promise<ServiceResponse<FinishMessage>> {
-    this.matchModel.endMatch(id);
-    return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
-  }
-
-  async updateMatch(
-    homeGoals: number,
-    awayGoals: number,
-    id:number,
-  ): Promise<ServiceResponse<UpdateMessage>> {
-    await this.matchModel.updateMatch(homeGoals, awayGoals, id);
-    return { status: 'SUCCESSFUL', data: { message: 'Updated' } };
-  }
-
-  async createMatch(matchParams: IMatch): Promise<ServiceResponse<IMatch>> {
-    const { homeTeamId, awayTeamId } = matchParams;
-
-    if (homeTeamId === awayTeamId) {
-      return { status: 'UNPROCESSABLE_ENTITY',
-        data:
-      { message: 'It is not possible to create a match with two equal teams' } };
+  public async getAllMatches(req: Request, res: Response) {
+    const { inProgress } = req.query;
+    if (!inProgress) {
+      const result = await this.matchService.getAllMatches();
+      return res.status(mapStatusHTTP(result.status)).json(result.data);
     }
+    const result = await this.matchService.filteredMatches(inProgress.toString());
+    return res.status(mapStatusHTTP(result.status)).json(result.data);
+  }
 
-    const homeExists = await this.teamService.getById(Number(homeTeamId));
-    const awayExists = await this.teamService.getById(Number(awayTeamId));
+  async endMatch(req: Request, res: Response) {
+    const { id } = req.params;
+    const result = await this.matchService.endMatch(Number(id));
+    return res.status(mapStatusHTTP(result.status)).json(result.data);
+  }
 
-    if (homeExists.status === 'NOT_FOUND' || awayExists.status === 'NOT_FOUND') {
-      return { status: 'NOT_FOUND',
-        data:
-      { message: 'There is no team with such id!' } };
-    }
+  async updateMatch(req: Request, res: Response) {
+    const { id } = req.params;
+    const result = await this.matchService
+      .updateMatch(Number(id), Number(req.body.homeTeamGoals), Number(req.body.awayTeamGoals));
 
-    const match = await this.matchModel.createMatch(matchParams);
+    return res.status(mapStatusHTTP(result.status)).json(result.data);
+  }
 
-    return { status: 'CREATED', data: match };
+  async createMatch(req: Request, res: Response) {
+    const result = await this.matchService.createMatch(req.body);
+
+    return res.status(mapStatusHTTP(result.status)).json(result.data);
   }
 }
