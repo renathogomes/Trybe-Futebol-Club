@@ -10,26 +10,6 @@ export default class MatchService {
     private teamService = new TeamService(),
   ) { }
 
-  public async createMatch(match: MatchDefault): Promise<ServiceResponse<IMatch>> {
-    const { awayTeamId, homeTeamId } = match;
-
-    if (homeTeamId === awayTeamId) {
-      return {
-        status: 'UNPROCESSABLE_ENTITY',
-        data: { message: 'It is not possible to create a match with two equal teams' } };
-    }
-
-    const homeTeam = await this.teamService.getById(Number(homeTeamId));
-    const awayTeam = await this.teamService.getById(Number(awayTeamId));
-
-    if (homeTeam.status === 'NOT_FOUND' || awayTeam.status === 'NOT_FOUND') {
-      return { status: 'NOT_FOUND', data: { message: 'There is no team with such id!' } };
-    }
-
-    const newMatch = await this.matchModel.createMatch(match);
-    return { status: 'CREATED', data: newMatch };
-  }
-
   public async getAllMatches(): Promise<ServiceResponse<IMatch[]>> {
     const allMatches = await this.matchModel.getAll();
 
@@ -54,5 +34,28 @@ export default class MatchService {
   public async endMatch(id: number): Promise<ServiceResponse<{ message: 'Finished' }>> {
     await this.matchModel.endMatch(id);
     return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
+  }
+
+  async createMatch(matchParams: MatchDefault): Promise<ServiceResponse<IMatch>> {
+    const { homeTeamId, awayTeamId } = matchParams;
+
+    if (homeTeamId === awayTeamId) {
+      return { status: 'UNPROCESSABLE_ENTITY',
+        data:
+      { message: 'It is not possible to create a match with two equal teams' } };
+    }
+
+    const homeExists = await this.teamService.getById(Number(homeTeamId));
+    const awayExists = await this.teamService.getById(Number(awayTeamId));
+
+    if (homeExists.status === 'NOT_FOUND' || awayExists.status === 'NOT_FOUND') {
+      return { status: 'NOT_FOUND',
+        data:
+      { message: 'There is no team with such id!' } };
+    }
+
+    const match = await this.matchModel.createMatch(matchParams);
+
+    return { status: 'CREATED', data: match };
   }
 }
