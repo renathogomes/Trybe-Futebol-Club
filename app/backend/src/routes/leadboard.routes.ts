@@ -1,13 +1,11 @@
-import { Request, Router, Response } from 'express';
-import LeaderBoardController from '../controller/leaderBoard.controller';
+import express = require ('express');
 
-const leaderBoardController = new LeaderBoardController();
+import Leaderboard from '../controller/leaderBoard.controller';
 
-const router = Router();
+const router = express.Router();
 
-router.get(
-  '/:subroute?',
-  (req: Request, res: Response) => leaderBoardController.getLeaderboard(req, res),
-);
+router.get('/home', Leaderboard.generateHomeLeaderboard);
+router.get('/away', Leaderboard.generateAwayLeaderboard);
+router.get('/', Leaderboard.generateLeaderboardList);
 
 export default router;
