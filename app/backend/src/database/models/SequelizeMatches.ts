@@ -64,7 +64,7 @@ SequelizeMatches.init(
 
 SequelizeMatches.belongsTo(SequelizeTeam, { as: 'homeTeam', foreignKey: 'home_team_id' });
 SequelizeMatches.belongsTo(SequelizeTeam, { as: 'awayTeam', foreignKey: 'away_team_id' });
-SequelizeMatches.hasMany(SequelizeTeam, { foreignKey: 'homeTeamId', as: 'homeMatch' });
-SequelizeMatches.hasMany(SequelizeTeam, { foreignKey: 'awayTeamId', as: 'awayMatch' });
+SequelizeTeam.hasMany(SequelizeMatches, { foreignKey: 'homeTeamId', as: 'homeMatch' });
+SequelizeTeam.hasMany(SequelizeMatches, { foreignKey: 'awayTeamId', as: 'awayMatch' });
 
 export default SequelizeMatches;
