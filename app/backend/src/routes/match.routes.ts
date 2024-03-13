@@ -7,11 +7,10 @@ const matchController = new ControllerMatch();
 
 router.get('/', (req: Request, res: Response) => matchController.getAllMatches(req, res));
 
-router.post(
-  '/',
+router.patch(
+  '/:id/finish',
   Validate.validateToken,
-  Validate.validateTeam,
-  (req: Request, res: Response) => matchController.createMatch(req, res),
+  (req: Request, res: Response) => matchController.endMatch(req, res),
 );
 
 router.patch(
@@ -20,10 +19,11 @@ router.patch(
   (req: Request, res: Response) => matchController.updateMatch(req, res),
 );
 
-router.patch(
-  '/:id/finish',
+router.post(
+  '/',
   Validate.validateToken,
-  (req: Request, res: Response) => matchController.endMatch(req, res),
+  Validate.validateTeam,
+  (req: Request, res: Response) => matchController.createMatch(req, res),
 );
 
 export default router;
