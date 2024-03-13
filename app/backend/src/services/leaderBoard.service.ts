@@ -25,35 +25,23 @@ const initialValues: ILeaderBoard = {
   efficiency: '0',
 };
 
-const sortByTotalPoints = (teamA: ILeaderBoard, teamB: ILeaderBoard) => teamB
-  .totalPoints - teamA.totalPoints;
-
-const sortByTotalVictories = (teamA: ILeaderBoard, teamB: ILeaderBoard) => teamB
-  .totalVictories - teamA.totalVictories;
-
-const sortByGoalsBalance = (teamA: ILeaderBoard, teamB: ILeaderBoard) => teamB
-  .goalsBalance - teamA.goalsBalance;
-
-const sortByGoalsFavor = (teamA: ILeaderBoard, teamB: ILeaderBoard) => teamB
-  .goalsFavor - teamA.goalsFavor;
-
-const sortLeaderboard = (leaderboardData: ILeaderBoard[]) => leaderboardData
+const sortLeaderboard = (leaderboardList: ILeaderBoard[]) => leaderboardList
   .sort((teamA, teamB) => {
-    let comparison = sortByTotalPoints(teamA, teamB);
+    let comparation = teamB.totalPoints - teamA.totalPoints;
 
-    if (comparison === 0) {
-      comparison = sortByTotalVictories(teamA, teamB);
+    if (comparation === 0) {
+      comparation = teamB.totalVictories - teamA.totalVictories;
 
-      if (comparison === 0) {
-        comparison = sortByGoalsBalance(teamA, teamB);
+      if (comparation === 0) {
+        comparation = teamB.goalsBalance - teamA.goalsBalance;
 
-        if (comparison === 0) {
-          comparison = sortByGoalsFavor(teamA, teamB);
+        if (comparation === 0) {
+          comparation = teamB.goalsFavor - teamA.goalsFavor;
         }
       }
     }
 
-    return comparison;
+    return comparation;
   });
 
 const calculaHome = (homeMatches: matchesModel[]) => homeMatches

@@ -1,15 +1,11 @@
 import express = require ('express');
 
-import {
-  generateAwayLeaderboard,
-  generateHomeLeaderboard,
-  generateLeaderboardList,
-} from '../controller/leaderBoard.controller';
+import Leaderboard from '../controller/leaderBoard.controller';
 
 const router = express.Router();
 
-router.get('/home', generateHomeLeaderboard);
-router.get('/away', generateAwayLeaderboard);
-router.get('/', generateLeaderboardList);
+router.get('/home', Leaderboard.generateHomeLeaderboard);
+router.get('/away', Leaderboard.generateAwayLeaderboard);
+router.get('/', Leaderboard.generateLeaderboardList);
 
 export default router;
